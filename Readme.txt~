@@ -1,0 +1,46 @@
+sRNA Loci detection algorithm.
+
+MacLean et al. 
+
+
+1. Overview
+The perl script here is an implementation for detecting sRNA loci from high throughput sequence data. The sequence data must be filtered and mapped to the reference genome prior to the use of the algorithms, it takse as input a gff file of start and stop positions of each sRNA on the reference. GFF files are flat tab-delimited files, each line of which corresponds to a sRNA. Each line has nine columns and looks like
+
+reference_sequence	source	method	start	stop	score	strand	phase	group
+
+
+3. Procedures
+
+Briefly, NiBLS begins by calculating the overlaps between the mapped sRNAs (a minimum inclusion distance allows near misses to be used) and creating a graph data structure, with overlapping sRNA nodes linked by undirected edges. Once all overlaps are calculated the clustering coefficient (the ratio of all possible overlaps to those that actually occur for each subgraph is calculated. If a pre-selected cutoff is to be used any subgraph with clustering coefficient below the threshold is rejected. Each remaining graph represents a locus that extends from the 5' most sRNA in each graph to the 3' most sRNA.
+
+4. Running the programs
+
+A version of the perl interpreter is required for the programs to run. Most versions of Unix/Linux and Mac OS X will have this installed already. Windows machines typically will not. Try Perl.com for info.
+
+
+Installation
+
+The program needs no real installation and can be run from anywhere. Simply move the whole folder containing the downloaded files to somewhere suitable
+
+Running
+
+The program is are called from the command line using the following convention: perl <program name> <options>
+
+e.g., perl nibls.pl my_input.gff 10 0.7
+
+all output is written to standard out. You can redirect the output to a file like so
+
+perl long.pl -f my_input.gff > my_output.gff
+
+Options
+
+ -f file name (required)
+ -m minimum inclusion distance (default: 5)
+ -c clustering coefficient (default: 0.6)
+
+
+
+5. Output
+
+Loci are written as a gff file to standard output.
+
